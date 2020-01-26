@@ -5,6 +5,13 @@
  *      Author: ahmedelehwany
  */
 
+#include "interpreter.h"
+#include "shellmemory.h"
+
+#include <stdio.h>
+#include <string.h>
+
+
 int interpreter(char *words[]) {
 	int errorCode = 0;
 	if(words[0][0] == '.' || words[0][1] == '/')	errorCode = 2;
@@ -19,37 +26,44 @@ int interpreter(char *words[]) {
 	else if(strcmp(words[0], cmd_quit) == 0)
 		errorCode = quit();
 	else if(strcmp(words[0], cmd_set) == 0)
-		errorCode = set();
+		errorCode = set(words[1], words[2]);
 	else if(strcmp(words[0], cmd_print) == 0)
-		errorCode = print();
+		errorCode = print(words[1]);
 	else if(strcmp(words[0], cmd_run) == 0)
 		errorCode = run();
 	else
-		printf("Unknown command");
+		printf("Unknown command\n");
 	return errorCode;
 }
 
 int help() {
-	printf("help method");
+	printf("Command (case sensative)           Description\n");
+	printf("help 			      		Displays all the commands\n");
+	printf("quit 				    	Exits / terminates the shell with \"Bye!\"\n");
+	printf("set VAR STRING 			    	Assigns a value to shell memory\n");
+	printf("print VAR 				Displays the STRING assigned to VAR\n");
+	printf("run SCRIPT.TXT 				Executes the file SCRIPT.TXT\n");
+
 	return 0;
 }
 
 int quit() {
-	printf("quit method");
+	printf("Bye!\n");
+	return 2;
+}
+
+int set(char* key, char* value) {
+	printf("set method\n");
+	add(key, value);
 	return 0;
 }
 
-int set() {
-	printf("set method");
-	return 0;
-}
-
-int print() {
-	printf("print method");
+int print(char* key) {
+	printVal(key);
 	return 0;
 }
 
 int run() {
-	printf("run method");
+	printf("run method\n");
 	return 0;
 }
