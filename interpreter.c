@@ -5,6 +5,7 @@
  *      Author: ahmedelehwany
  */
 
+#include "shell.h"
 #include "interpreter.h"
 #include "shellmemory.h"
 
@@ -21,6 +22,8 @@ int interpreter(char *words[]) {
 	const char *cmd_print = "print";
 	const char *cmd_run = "run";
 
+//	printf("cmd length is:%d", strlen(words[0]));
+
 	if (strcmp(words[0], cmd_help) == 0)
 		errorCode = help();
 	else if(strcmp(words[0], cmd_quit) == 0)
@@ -30,7 +33,7 @@ int interpreter(char *words[]) {
 	else if(strcmp(words[0], cmd_print) == 0)
 		errorCode = print(words[1]);
 	else if(strcmp(words[0], cmd_run) == 0)
-		errorCode = run();
+		errorCode = run(words[1]);
 	else
 		printf("Unknown command\n");
 	return errorCode;
@@ -53,7 +56,7 @@ int quit() {
 }
 
 int set(char* key, char* value) {
-	printf("set method\n");
+//	printf("set method\n");
 	add(key, value);
 	return 0;
 }
@@ -63,7 +66,25 @@ int print(char* key) {
 	return 0;
 }
 
-int run() {
-	printf("run method\n");
+int run(char * fileName) {
+//	printf("run method\n");
+//	printf("%s\n", fileName);
+	int errorCode = 0;
+	char line[1000];
+	FILE *file = fopen(fileName, "rt");
+//	printf("file is success");
+	fgets(line, 999, file);
+	while(!feof(file)) {
+		while(line[strlen(line)-1] == '\r' || line[strlen(line)-1] == '\n'){
+			line[strlen(line)-1] = '\0';
+		}
+//		printf("%d\n", line[strlen(line)-1]);
+//		printf("%s.\n", line);
+		char** words = parse(line);
+		errorCode = interpreter(words);
+		fgets(line, 999, file);
+	}
+	fclose(file);
 	return 0;
 }
+

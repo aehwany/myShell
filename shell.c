@@ -13,14 +13,20 @@
 #include <string.h>
 
 int main() {
+	printf("Welcome to the Ahmed Elehwany shell!\n");
+	printf("Version 1.0 Created January 2020\n");
 	while(1) {
-		printf("Welcome to the Ahmed Elehwany shell!\n");
-		printf("Version 1.0 Created January 2020\n");
-		printf("$");
+//		printf("$");
 		char input[1000];
 		fgets(input, 1000, stdin);
-		input[strlen(input)-1] = '\0';
+		while(input[strlen(input)-1] == '\r' || input[strlen(input)-1] == '\n'){
+			input[strlen(input)-1] = '\0';
+		}
+//		printf("%d\n", input[strlen(input)-1]);
+//		printf("length is %d", strlen(input));
+//		printf("%s\n", input);
 		char** words = parse(input);
+//		printf("1st word is :%s\n", words[0]);
 		int errorCode = interpreter(words);
 		if(errorCode == 2)	return 0;
 	}

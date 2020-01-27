@@ -14,7 +14,7 @@ int help();
 int quit();
 int set(char *key, char *value);
 int print(char *key);
-int run();
+int run(char *fileName);
 
 
 #endif /* INTERPRETER_H_ */
