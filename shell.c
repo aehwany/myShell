@@ -3,6 +3,7 @@
  *
  *  Created on: Jan. 23, 2020
  *      Author: ahmedelehwany
+ *      Id: 260707540
  */
 
 #include "shell.h"
@@ -16,17 +17,10 @@ int main() {
 	printf("Welcome to the Ahmed Elehwany shell!\n");
 	printf("Version 1.0 Created January 2020\n");
 	while(1) {
-//		printf("$");
+		printf("$");
 		char input[1000];
 		fgets(input, 1000, stdin);
-		while(input[strlen(input)-1] == '\r' || input[strlen(input)-1] == '\n'){
-			input[strlen(input)-1] = '\0';
-		}
-//		printf("%d\n", input[strlen(input)-1]);
-//		printf("length is %d", strlen(input));
-//		printf("%s\n", input);
 		char** words = parse(input);
-//		printf("1st word is :%s\n", words[0]);
 		int errorCode = interpreter(words);
 		if(errorCode == 2)	return 0;
 	}
@@ -40,6 +34,9 @@ char** parse(char* input) {
 	int wordIndex = 0;
 	char accumulator[200];
 	char **words = calloc(100, sizeof(char*));
+	while(input[strlen(input)-1] == '\r' || input[strlen(input)-1] == '\n'){
+		input[strlen(input)-1] = '\0';
+	}
 	for(lineIndex = 0; input[lineIndex] == ' '; lineIndex++);	//skip white spaces
 	while(input[lineIndex] != '\0' && lineIndex < 1000) {
 		for(charIndex = 0; input[lineIndex] != '\0' && input[lineIndex] != ' ' && lineIndex < 1000; lineIndex++, charIndex++){
@@ -50,9 +47,6 @@ char** parse(char* input) {
 		wordIndex++;
 		lineIndex++;
 	}
-//	printf("word[0] is %s\n", words[0]);
-//	printf("word[1] is %s\n", words[1]);
-	//printf("word[2] is %s\n", words[2]);
 	return words;
 }
 

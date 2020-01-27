@@ -12,7 +12,7 @@
 int interpreter(char *words[]);
 int help();
 int quit();
-int set(char *key, char *value);
+int set(char **words);
 int print(char *key);
 int run(char *fileName);
 
