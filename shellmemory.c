@@ -12,34 +12,43 @@
 #include <string.h>
 #include <stdlib.h>
 
+int NUM_VARS = 0;
+int MEM_SIZE = 100;
 struct MEMORY *shellMemory;
 
+int initMemory(){
+	shellMemory = calloc(MEM_SIZE, sizeof(struct MEMORY));
+	return 0;
+}
 int printVal(char *key) {
-	struct MEMORY *iterator;
-	iterator = shellMemory;
-	while(iterator != NULL) {
-		if(strcmp(iterator->key , key) == 0) {
-			printf("Key: %s\nValue: %s\n", key, iterator->value);
-			return 0;
-		}
-		iterator = iterator->next;
+	for(int i = 0 ; i < MEM_SIZE; i++){
+        if ((shellMemory[i].key != NULL) && (strcmp(shellMemory[i].key, key) == 0)){
+        	printf("%s\n", shellMemory[i].value);
+        	return 0;
+        }
 	}
 	printf("Variable does not exist\n");
-	return 0;
+	return -1;
 }
 
 int add(char *key, char *value) {
-	struct MEMORY *new = (struct MEMORY*)malloc(sizeof(struct MEMORY));
-	new->key = key;
-	new->value = value;
-
-	if(shellMemory == NULL) {
-		shellMemory = new;
+	int index;
+	for(index = 0 ; index < MEM_SIZE; index++){
+		if(shellMemory[index].key == NULL)	break;
+        if(strcmp(shellMemory[index].key, key) == 0){
+        	strcpy(shellMemory[index].value, value);
+        	return 0;
+        }
 	}
-	else{
-		new->next = shellMemory;
+	if(NUM_VARS >= MEM_SIZE) {
+		MEM_SIZE += 100;
+		shellMemory = realloc(shellMemory, MEM_SIZE * sizeof(struct MEMORY));
 	}
-	shellMemory = new;
+	shellMemory[index].key = calloc(1000, sizeof(char));
+	shellMemory[index].value = calloc(1000, sizeof(char));
+	strcpy(shellMemory[index].key, key);
+	strcpy(shellMemory[index].value, value);
+	NUM_VARS++;
 	return 0;
 }
 
